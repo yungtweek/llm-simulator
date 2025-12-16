@@ -5,7 +5,7 @@ an asynchronous, streaming-first LLM architecture (Gateway → Kafka → Worker 
 
 This simulator was used to validate the streaming and failure behavior of the **Talkie** LLM pipeline.
 See the full system architecture in the Talkie repository:
-https://github.com/tweek/talkie
+https://github.com/yungtweek/talkie
 
 ---
 
