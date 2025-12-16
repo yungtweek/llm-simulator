@@ -1,0 +1,72 @@
+
+
+syntax = "proto3";
+
+package llm.v1;
+
+option go_package = "llm-simulator/gen/llm/v1;llmv1";
+
+service LlmService {
+  rpc ChatCompletion(ChatCompletionRequest) returns (ChatCompletionResponse);
+  rpc ChatCompletionStream(ChatCompletionRequest) returns (stream ChatCompletionChunkResponse);
+}
+
+message RequestMeta {
+  string request_id = 1;
+  string trace_id = 2;
+  string session_id = 3;
+  string user_id = 4;
+}
+
+message ChatMessage {
+  string role = 1;
+  string content = 2;
+}
+
+message ChatCompletionRequest {
+  // Correlation / metrics tags
+  RequestMeta meta = 1;
+
+  // Model / prompt
+  string model = 2;
+  string system_prompt = 3;
+  string user_prompt = 4;
+
+  // Optional context as a list of prior messages
+  repeated ChatMessage context = 5;
+
+  // Sampling params (mock can ignore most except max_tokens)
+  double temperature = 6;
+  int32 max_tokens = 7;
+  double top_p = 8;
+}
+
+message ChatCompletionResponse {
+  string output_text = 1;
+  string finish_reason = 2;
+
+  int32 prompt_tokens = 3;
+  int32 completion_tokens = 4;
+  int32 total_tokens = 5;
+
+  int64 latency_ms = 6;
+}
+
+message ChatCompletionChunkResponse {
+  // Responses-style event type
+  // e.g. "output_text.delta", "output_text.done"
+  string type = 1;
+
+  // Streaming payload
+  string text = 2; // delta text for *.delta events
+
+  // Completion metadata (set on done event)
+  string finish_reason = 3;
+  int32 index = 4;
+
+  int32 prompt_tokens = 5;
+  int32 completion_tokens = 6;
+  int32 total_tokens = 7;
+
+  int64 latency_ms = 8;
+}

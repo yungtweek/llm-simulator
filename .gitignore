@@ -1,0 +1,25 @@
+# OS / editor
+.DS_Store
+.idea/
+*.iml
+
+# Environment / secrets
+.env
+.env.*
+
+# Go build artifacts
+bin/
+*.test
+*.out
+coverage*.txt
+*.coverprofile
+profile.out
+
+# Go workspaces (optional)
+go.work
+go.work.sum
+
+# Node / tooling
+node_modules/
+
+.docs
